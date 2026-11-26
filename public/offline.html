@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Offline — NUBCONNECT</title>
+    <style>
+      :root {
+        --bg: #f6f3ee;
+        --text: #19172d;
+        --sec: #5c5874;
+        --iris: #6258e8;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141321;
+          --text: #f2efe9;
+          --sec: #a5a1bd;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        padding: 24px;
+        text-align: center;
+      }
+      .mark {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 20px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #6258e8, #4b77f4);
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 34px;
+        font-weight: 800;
+      }
+      h1 {
+        font-size: 22px;
+        margin: 0 0 8px;
+      }
+      p {
+        color: var(--sec);
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0 0 20px;
+        max-width: 34ch;
+      }
+      button {
+        border: 0;
+        border-radius: 16px;
+        background: var(--iris);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        padding: 14px 28px;
+        min-height: 44px;
+        cursor: pointer;
+      }
+      footer {
+        position: fixed;
+        bottom: max(12px, env(safe-area-inset-bottom));
+        left: 0;
+        right: 0;
+        color: var(--sec);
+        font-size: 11px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="mark" aria-hidden="true">N</div>
+      <h1>You&rsquo;re offline</h1>
+      <p>
+        NUBCONNECT needs a connection to show your campus feed, messages and listings. Private data is never stored on
+        your device by this page.
+      </p>
+      <button onclick="location.reload()">Try again</button>
+    </main>
+    <footer>NUBCONNECT &mdash; Northern University Bangladesh students</footer>
+  </body>
+</html>

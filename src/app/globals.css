@@ -1,0 +1,444 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   CAMPUS ORBIT — Playful Spatial Social UI · global styles
+   Readability always wins over decorative glass. Content surfaces stay
+   near-opaque; chrome (sidebar, sheets, dialogs, floating controls) is glass.
+   ========================================================================== */
+
+:root {
+  --cg-ambient: radial-gradient(1100px 520px at 88% -12%, rgba(140, 123, 193, 0.10), transparent 62%),
+    radial-gradient(820px 460px at -12% 18%, rgba(239, 132, 109, 0.06), transparent 56%),
+    radial-gradient(680px 380px at 50% 112%, rgba(231, 243, 106, 0.07), transparent 60%);
+  --cg-glass-bg: rgba(255, 255, 255, 0.72);
+  --cg-glass-border: rgba(33, 27, 53, 0.08);
+  --cg-header-h: 52px;
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(0, 0%, 0%);
+  --skeleton: hsl(0, 0%, 90%);
+  --border: hsl(220, 20%, 90%);
+  --btn-border: hsl(214deg, 31.8%, 91.4%);
+  --input: hsl(220, 20%, 90%);
+  --radius: 0.5rem;
+}
+
+.dark {
+  --cg-ambient: radial-gradient(1100px 520px at 88% -12%, rgba(140, 123, 193, 0.12), transparent 62%),
+    radial-gradient(820px 460px at -12% 18%, rgba(239, 132, 109, 0.05), transparent 56%),
+    radial-gradient(680px 380px at 50% 112%, rgba(231, 243, 106, 0.04), transparent 60%);
+  --cg-glass-bg: rgba(33, 27, 53, 0.85);
+  --cg-glass-border: rgba(255, 255, 255, 0.09);
+  --background: hsl(222, 94%, 5%);
+  --foreground: hsl(0, 0%, 100%);
+  --skeleton: hsl(218, 36%, 16%);
+  --border: hsl(220, 20%, 90%);
+  --btn-border: hsl(217deg, 32.6%, 17.5%);
+  --input: hsl(219, 63%, 16%);
+  --radius: 0.5rem;
+}
+
+/* Electric Violet text on midnight-plum surfaces: #927CFA measures 4.56:1
+   against --color-campus-dark-card (marginal). The lighter #A79AFB clears AA
+   everywhere (6.09:1 on dark cards, 4.80:1 on violet-dark-soft, 5.4:1 on
+   dark-elev). Fills (bg-violet with plum text) intentionally stay #927CFA.
+   The `html.dark` prefix gives these overrides (0,2,1) specificity so
+   they beat Tailwind's own `dark:text-*` utilities (0,2,0), which the
+   compiler emits after this file's custom rules. */
+html.dark .text-violet,
+html.dark .text-violet-ink,
+html.dark .dark\:text-violet,
+html.dark .hover\:text-violet:hover,
+html.dark .hover\:text-violet-ink:hover {
+  color: #a79afb;
+}
+
+/* Aqua ink text in dark mode: #0F6B5C measures 2.30:1 on dark cards.
+   Raw aqua #72DCCB clears AA everywhere (9.01:1 dark-card). */
+html.dark .text-aqua-ink,
+html.dark .dark\:text-aqua {
+  color: #72dccb;
+}
+
+/* Lime ink text in dark mode: #4E6B10 measures 2.35:1 on dark cards.
+   Raw lime #C9F36B clears AA everywhere (11.61:1 dark-card). */
+html.dark .text-lime-ink,
+html.dark .dark\:text-lime {
+  color: #c9f36b;
+}
+
+/* While the saved dark palette is applied at boot, suppress transitions so
+   every color resolves instantly. Without this, elements animate from the
+   light palette over 150ms — invisible in the foreground, but a hidden
+   (background) tab freezes the animation timeline and leaves every
+   transition stranded at its light-palette start value. The theme script
+   removes .theme-boot ~100ms after it applies. */
+.theme-boot,
+.theme-boot *,
+.theme-boot *::before,
+.theme-boot *::after {
+  transition: none !important;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-campus-bg text-campus-text antialiased dark:bg-campus-dark-bg dark:text-campus-dark-text;
+  background-image: var(--cg-ambient);
+  background-attachment: fixed;
+  overscroll-behavior-y: none;
+}
+
+/* --- Glass chrome ------------------------------------------------------- */
+.glass {
+  background: var(--cg-glass-bg);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid var(--cg-glass-border);
+  box-shadow: 0 12px 32px -18px rgba(33, 27, 53, 0.45);
+}
+
+.glass-strong {
+  background: var(--cg-glass-bg);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid var(--cg-glass-border);
+  box-shadow: 0 24px 56px -28px rgba(33, 27, 53, 0.55);
+}
+
+/* Solid, readable content surface (posts, bubbles, listings, forms) */
+.card {
+  @apply rounded-2xl border border-campus-border bg-campus-card shadow-soft dark:border-campus-dark-border dark:bg-campus-dark-card;
+}
+
+/* --- EDITORIAL CAMPUS utilities ------------------------------------------
+   A small, deliberate vocabulary shared by the masthead and the signature
+   campus banner. No glowing blobs, no glass-on-glass stacking. */
+.editorial-kicker {
+  @apply font-mono text-[10px] font-semibold uppercase tracking-[0.22em];
+}
+
+.editorial-rule {
+  background: linear-gradient(90deg, currentColor 0%, transparent 100%);
+  opacity: 0.22;
+  height: 1px;
+}
+
+/* The ticker's two halves are identical, so -50% is an invisible loop point. */
+.ticker-track {
+  width: max-content;
+  will-change: transform;
+}
+.ticker-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+/* Portrait tiles keep their resting rotation even when motion is disabled. */
+.portrait-tile {
+  transform: rotate(var(--portrait-tilt, 0deg));
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .portrait-tile:hover {
+    transform: translateY(-6px) scale(1.06) rotate(0deg);
+  }
+}
+
+/* --- Campus live banner ---------------------------------------------------
+   A compact, full-width presence strip. The gradient drifts slowly and the
+   portraits breathe a few pixels — no blobs, no marquee, no hero typography.
+   Both animations stop under reduced motion (see the guard below). */
+.campus-live-banner {
+  background-image: linear-gradient(
+    110deg,
+    #171e29 0%,
+    #0e3b47 26%,
+    #1d5561 50%,
+    #4a3f6b 76%,
+    #171e29 100%
+  );
+  background-size: 220% 220%;
+  animation: campus-gradient-drift 22s ease-in-out infinite alternate;
+}
+@keyframes campus-gradient-drift {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+@keyframes campus-portrait-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -3px, 0); }
+}
+.campus-portrait-float {
+  animation: campus-portrait-float 6s ease-in-out infinite;
+}
+
+/* --- Safe areas ---------------------------------------------------------- */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.pt-safe-header {
+  padding-top: calc(var(--cg-header-h) + env(safe-area-inset-top, 0px));
+}
+
+/* --- Skeletons ----------------------------------------------------------- */
+.skeleton {
+  @apply animate-shimmer rounded-xl bg-gradient-to-r from-campus-border via-campus-bg to-campus-border dark:from-campus-dark-border dark:via-campus-dark-card dark:to-campus-dark-border;
+  background-size: 400px 100%;
+}
+
+/* --- Utilities ----------------------------------------------------------- */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Extends the tappable area of a small visual control to ~44px without
+   affecting layout — pseudo-elements are part of the element's hit area.
+   Pair with Tailwind `relative` for statically positioned buttons. */
+.hit-pad::before {
+  content: '';
+  position: absolute;
+  inset: -14px;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --- CAMPUS ORBIT interactions -------------------------------------------- */
+
+/* Guaranteed keyframes (Tailwind only emits config keyframes alongside a
+   used animation utility; .orbit-* needs them unconditionally). */
+@keyframes orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Orbit rings: decorative interest nodes slowly circling a centre point.
+   Static fallback (no motion) = the nodes still sit in a connected ring. */
+.orbit-stage {
+  position: relative;
+}
+.orbit-ring {
+  animation: orbit 26s linear infinite;
+}
+.orbit-ring-slow {
+  animation: orbit 44s linear infinite reverse;
+}
+/* Keeps an orbiting node visually upright while its ring rotates. */
+.orbit-counter {
+  animation: orbit 26s linear infinite reverse;
+}
+.orbit-ring-slow .orbit-counter {
+  animation: orbit 44s linear infinite;
+}
+
+/* Digital membership / passport cards: gentle 3D tilt toward the pointer.
+   Reduced-motion users get no tilt (see the media query below). */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+}
+.tilt-card.is-tilting {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+}
+.tilt-layer {
+  transform: translateZ(26px);
+}
+
+/* --- CAMPUS PULSE: heartbeat + ECG ----------------------------------------- */
+
+/* Heartbeat: a warm double-thump for the live presence dot / icon. */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.18); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.12); }
+  70% { transform: scale(1); }
+}
+.animate-heartbeat {
+  animation: heartbeat 1.6s ease-in-out infinite;
+}
+
+/* ECG trace: a bright dash sweeping along the pulse line (SVG stroke). */
+@keyframes ecg-sweep {
+  from { stroke-dashoffset: 130; }
+  to { stroke-dashoffset: -130; }
+}
+.animate-ecg {
+  stroke-dasharray: 42 88;
+  animation: ecg-sweep 2.6s linear infinite;
+}
+
+/* --- Ambient + reaction motion --------------------------------------------- */
+
+/* Slow float for decorative gradient accents. */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* Reaction burst: the chosen emoji pops from the button and drifts up. */
+@keyframes reaction-burst {
+  0% { transform: scale(0.4) translateY(8px); opacity: 0; }
+  30% { transform: scale(1.25) translateY(-2px); opacity: 1; }
+  100% { transform: scale(0.9) translateY(-28px); opacity: 0; }
+}
+.animate-reaction-burst {
+  animation: reaction-burst 700ms ease-out forwards;
+}
+
+/* Count pop: a tiny bump when a counter ticks up. */
+@keyframes count-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+.animate-count-pop {
+  animation: count-pop 350ms ease-out;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .orbit-ring,
+  .orbit-ring-slow,
+  .orbit-counter,
+  .orbit-ring-slow .orbit-counter {
+    animation: none;
+  }
+  .tilt-card.is-tilting {
+    transform: none;
+  }
+  .ticker-track {
+    animation: none !important;
+    transform: none !important;
+  }
+  .animate-portrait-float,
+  .animate-portrait-float-alt {
+    animation: none !important;
+  }
+  .campus-live-banner,
+  .campus-portrait-float {
+    animation: none !important;
+  }
+  .campus-live-banner {
+    background-position: 50% 50%;
+  }
+}
+
+/* Typing indicator: three dots rise and settle, gently. */
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+.typing-dot {
+  animation: typing-dot 1.2s ease-in-out infinite;
+}
+
+/* --- Accessible focus, disabled and control feedback ---------------------- */
+
+/* Visible focus ring (WCAG 2.2 AA 2.4.11). Violet-ink on light surfaces,
+   the AA-cleared electric violet on dark. Keyboard users always win over
+   appearance — pointer focus stays clean via :focus-visible. */
+:focus-visible {
+  outline: 2px solid #6b54d6;
+  outline-offset: 2px;
+  border-radius: 0.375rem;
+}
+html.dark :focus-visible {
+  outline-color: #a79afb;
+}
+
+/* Smooth scrolling for in-page navigation when the user has not opted out. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Disabled affordance must never look interactive. */
+button:disabled,
+[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+/* Press feedback: controls sink very slightly on activation (GPU-friendly
+   transform only). Reduced-motion users feel nothing; see the media query. */
+.btn-press {
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-press:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+/* Hover lift for media cards (Marketplace, Rooms, clubs): one transform,
+   no layout jitter, no ambient animation. */
+.hover-lift {
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 2px 6px rgba(33, 27, 53, 0.06),
+      0 20px 48px -24px rgba(33, 27, 53, 0.35);
+  }
+}
+
+/* Selected-state chip transition used by filter chips and tab rails. */
+.chip-toggle {
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* Google sign-in button component used by AnimatedForm. */
+.g-button {
+  @apply rounded-[var(--radius)] border;
+  border-color: var(--btn-border);
+}
