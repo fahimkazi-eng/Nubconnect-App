@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import EditorialWelcome from '@/components/campus/EditorialWelcome';
 import WhosOnCampus from '@/components/campus/WhosOnCampus';
 import CampusMoments from '@/components/campus/CampusMoments';
 import { HomeDesk, HomeEventsRail } from '@/components/campus/HomeRail';
@@ -16,7 +15,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className="space-y-6">
-      <EditorialWelcome />
       <WhosOnCampus />
 
       {/*
